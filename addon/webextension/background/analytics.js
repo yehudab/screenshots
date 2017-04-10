@@ -22,35 +22,33 @@ window.analytics = (function () {
     }
     options = options || {};
     let di = deviceInfo();
-    return new Promise((resolve, reject) => {
-      let url = main.getBackend() + "/event";
-      let req = new XMLHttpRequest();
-      req.open("POST", url);
-      req.setRequestHeader("content-type", "application/json");
-      req.onload = catcher.watchFunction(() => {
-        if (req.status >= 300) {
-          let exc = new Error("Bad response from POST /event");
-          exc.status = req.status;
-          exc.statusText = req.statusText;
-          reject(exc);
-        } else {
-          resolve();
-        }
-      });
-      options.applicationName = di.appName;
-      options.applicationVersion = di.addonVersion;
-      let abTests = auth.getAbTests();
-      for (let testName in abTests) {
-        options[abTests[testName].gaField] = abTests[testName].value;
-      }
-      console.info(`sendEvent ${eventCategory}/${action}/${label || 'none'} ${JSON.stringify(options)}`);
-      req.send(JSON.stringify({
+    let url = main.getBackend() + "/event";
+    options.applicationName = di.appName;
+    options.applicationVersion = di.version;
+    let abTests = auth.getAbTests();
+    for (let testName in abTests) {
+      options[abTests[testName].gaField] = abTests[testName].value;
+    }
+    console.info(`sendEvent ${eventCategory}/${action}/${label || 'none'} ${JSON.stringify(options)}`);
+    let req = new Request(url, {
+      method: "POST",
+      mode: "cors",
+      headers: {"content-type": "application/json"},
+      body: JSON.stringify({
         deviceId: auth.getDeviceId(),
         event: eventCategory,
         action,
         label,
         options
-      }));
+      })
+    });
+    return fetch(req).then((resp) => {
+      if (! resp.ok) {
+        throw new Error(`Error in sendEvent response: ${resp.status}`);
+      }
+    }).catch((error) => {
+      // sendEvent is fire-and-forget, so this console.warn is the best we have
+      console.warn("Error in sendEvent response:", error);
     });
   };
 
