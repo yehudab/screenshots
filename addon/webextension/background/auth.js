@@ -37,37 +37,41 @@ window.auth = (function () {
   }
 
   function register() {
-    return new Promise((resolve, reject) => {
-      let registerUrl = main.getBackend() + "/api/register";
-      let req = new XMLHttpRequest();
-      req.open("POST", registerUrl);
-      req.setRequestHeader("content-type", "application/x-www-form-urlencoded");
-      req.onload = catcher.watchFunction(() => {
-        if (req.status == 200) {
-          console.info("Registered login");
-          initialized = true;
-          saveAuthInfo(JSON.parse(req.responseText));
-          resolve(true);
-          analytics.sendEvent("registered");
-        } else {
-          analytics.sendEvent("register-failed", `bad-response-${req.status}`);
-          console.warn("Error in response:", req.responseText);
-          let exc = new Error("Bad response: " + req.status);
-          exc.popupMessage = "LOGIN_ERROR";
-          reject(exc);
-        }
-      });
-      req.onerror = catcher.watchFunction(() => {
-        analytics.sendEvent("register-failed", "connection-error");
-        let exc = new Error("Error contacting server");
-        exc.popupMessage = "LOGIN_CONNECTION_ERROR";
-        reject(exc);
-      });
-      req.send(uriEncode({
+    let registerUrl = main.getBackend() + "/api/register";
+    let req = new Request(registerUrl, {
+      method: "POST",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded"
+      },
+      mode: "cors",
+      body: uriEncode({
         deviceId: registrationInfo.deviceId,
         secret: registrationInfo.secret,
         deviceInfo: JSON.stringify(deviceInfo())
-      }));
+      })
+    });
+    return fetch(req).then((resp) => {
+      console.log("got response:", resp);
+      if (! resp.ok) {
+        analytics.sendEvent("register-failed", `bad-response-${resp.status}`);
+        let exc = new Error(`Bad response: ${resp.status}`);
+        resp.text().then((responseText) => {
+          console.warn("Error in response:", resp.status, resp.statusText, responseText);
+        }).catch(() => {});
+        exc.popupMessage = "LOGIN_ERROR";
+        throw exc;
+      }
+      return resp.json();
+    }).then((respJson) => {
+      initialized = true;
+      saveAuthInfo(respJson);
+      analytics.sendEvent("registered");
+    }).catch((error) => {
+      if (! error.popupMessage) {
+        analytics.sendEvent("register-failed", "connection-error");
+        error.popupMessage = "LOGIN_CONNECTION_ERROR";
+      }
+      throw error;
     });
   }
 
