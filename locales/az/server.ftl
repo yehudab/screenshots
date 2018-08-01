@@ -8,6 +8,7 @@ gMyShots = Ekran Görüntülərim
 gHomeLink = Ev
 gNoShots =
     .alt = Ekran görüntüsü tapılmadı
+gScreenshotsDescription = Ekran Görüntüləri asanlaşdırıldı. Firefox-u tərk etmədən ekran görüntülərini çəkin, saxlayın və paylaşın.
 
 ## Footer
 
@@ -27,6 +28,7 @@ footerLinkRemoveAllData = Bütün məlumatları sil
 # creatingPageTitleDefault.
 creatingPageTitle = { $title } yaradılır
 creatingPageTitleDefault = səhifə
+creatingPageWaitMessage = Ekran görüntünüz saxlanılır…
 
 ## Home page
 
@@ -40,6 +42,10 @@ homePageGetStarted = Başla
 # Note: do not translate 'Firefox Screenshots' when translating this string
 homePageHowScreenshotsWorks = Firefox Ekran Görüntüləri necə işləyir
 homePageGetStartedTitle = Başla
+# Note: Screenshots is an abbreviation for Firefox Screenshots, and should not be translated.
+homePageGetStartedDescription = Alət sətrinizdə yeni Ekran Görüntüləri ikonunu tapın. Onu seçin və Ekran Görüntüləri menyusu səyyahınızın pəncərəsinin üstündə peyda olacaq.
+# Note: Screenshots is an abbreviation for Firefox Screenshots, and should not be translated.
+homePageGetStartedDescriptionPageAction = Ünvan sətrindəki səhifə əməliyyatları menyusundan Ekran Görüntüləri ikonunu seçin  və Ekran Görüntüləri menyusu səyyahınızın pəncərəsinin üstündə peyda olacaq.
 homePageCaptureRegion = Bölgəni çək
 homePageCapturePage = Səhifəni çək
 homePageSaveShare = Saxla və Paylaş
@@ -51,6 +57,8 @@ homePageCookiesLink = Çərəzlər
 ## Leave Screenshots page
 
 leavePageRemoveAllData = Bütün məlumatlar silindi
+# Note: do not translate 'Firefox Screenshots' when translating this string
+leavePageErrorAddonRequired = Hesabınızı silmək üçün Firefox Screenshots quraşdırılmış olmalıdır
 leavePageErrorGeneric = Xəta baş verdi
 leavePageButtonProceed = Davam et
 leavePageButtonCancel = Ləğv et
@@ -66,6 +74,7 @@ notFoundPageDescription = Səhifə tapılmadı.
 
 # This is the HTML title tag of the page
 shotPageTitle = Ekran görüntüsü: { $originalTitle }
+shotPageAlertErrorUpdatingTitle = Başlıq saxlanılması xətası
 shotPageShareButton =
     .title = Paylaş
 shotPageCopy = Köçür
@@ -78,6 +87,8 @@ shotPageSharePinterest =
     .title = Pinterest-də paylaş
 shotPageShareEmail =
     .title = Keçidi e-poçt ilə paylaş
+shotPageCopyImageText =
+    .label = Şəklin mətnini köçürt
 shotPageDownloadShot =
     .title = Endir
 shotPageDownload = Endir
@@ -135,18 +146,75 @@ timeDiffFutureDays =
 
 ## Annotations
 
+annotationPenButton =
+    .title = Qələm
+annotationHighlighterButton =
+    .title = Marker
+annotationUndoButton =
+    .title = Geri al
+annotationRedoButton =
+    .title = Təkrarla
+annotationTextButton =
+    .title = Mətn əlavə et
 # Note: This button reverts all the changes on the image since the start of the editing session.
 annotationClearButton =
     .title = Təmizlə
 annotationCropButton =
     .title = Kəs
+annotationSaveEditButton = Saxla
+    .title = Dəyişikliyi saxla
+annotationCancelEditButton = Ləğv et
+    .title = Dəyişikliyi ləğv et
 annotationCropConfirmButton = Təsdiqlə
     .title = Seçilənləri təsdiqlə
 annotationCropCancelButton = Ləğv et
     .title = Seçilənləri ləğv et
+annotationColorWhite =
+    .title = Ağ
+annotationColorBlack =
+    .title = Qara
+annotationColorRed =
+    .title = Qırmızı
+annotationColorGreen =
+    .title = Yaşıl
+annotationColorBlue =
+    .title = Göy
+annotationColorYellow =
+    .title = Sarı
+annotationColorPurple =
+    .title = Bənövşəyi
+annotationColorSeaGreen =
+    .title = Dəniz yaşılı
+annotationColorGrey =
+    .title = Boz
+# Note: annotationTextSize is a title for text size selection dropdown.
+annotationTextSize =
+    .title = Mətnin ölçüsü
+# Values shown in text size selection dropdown
+textSizeSmall = Balaca
+textSizeMedium = Orta
+textSizeLarge = Böyük
+# Confirm and Cancel button title shown when using text tool
+annotationTextConfirmButton =
+    .title = Təsdiqlə
+annotationTextCancelButton =
+    .title = Ləğv et
+# Default placeholder used in input field when adding text annotations
+textToolInputPlaceholder =
+    .placeholder = Salam
 
 ## Settings Page
 
+settingsDisconnectButton = Əlaqəni kəs
+    .title = Əlaqəni kəs
+settingsGuestAccountMessage = Qonaq Hesabı
+settingsSignInInvite = Cihazlar arasında sinxronlaşma üçün daxil olun
+settingsSignInButton = Daxil ol
+    .title = Daxil ol
+SettingsPageHeader = Firefox Screenshots Tənzimləmələri
+settingsPageSubHeader = Sync və Hesablar
+settingsClosePreferences =
+    .title = Nizamlamaları qapat
 
 ## Shotindex page
 
@@ -168,11 +236,40 @@ shotIndexNoExpirationSymbol = ∞
 
 ## Delete Confirmation Dialog
 
+shotDeleteConfirmationMessage = Bu görüntünü silmək istədiyinizdən əminsiniz?
+shotDeleteCancel = Ləğv et
+    .title = Ləğv et
+shotDeleteConfirm = Sil
+    .title = Sil
 
 ## Metrics page
 ## All metrics strings are optional for translation
 
+# Note: 'Firefox Screenshots' should not be translated
+metricsPageTitle = Firefox Screenshots Metrikləri
+metricsPageTotalsQueryTitle = Ümumi
+# Note: Screenshots is an abbreviation for Firefox Screenshots, and should not be translated.
+metricsPageTotalsQueryDescription = Screenshots-un İcmalı
+metricsPageTotalsQueryDevices = Ümumi qeydiyyatdan keçmiş cihazlar
+metricsPageTotalsQueryActiveShots = Aktiv görüntülər
+metricsPageTotalsQueryExpiredShots = Vaxtı keçib (lakin bərpa oluna bilər)
+metricsPageTotalsQueryExpiredDeletedShots = Vaxtı keçib (və silinib)
+metricsPageShotsQueryTitle = Günlük Görüntülər
+metricsPageShotsQueryDescription = Hər gün yaradılmış görüntülərin sayı (son 30 gün ərzində)
+metricsPageShotsQueryCount = Görüntülərin sayı
 metricsPageShotsQueryDay = Gün
+metricsPageUsersQueryTitle = Günlük İstifadəçilər
+metricsPageUsersQueryDescription = Gün ərzində heç olmasa bir ekran görüntüsü yaratmış istifadəçilərin sayı (son 30 gün)
+metricsPageUsersQueryCount = İstifadəçilərin sayı
 metricsPageUsersQueryDay = Gün
+metricsPageUserShotsQueryTitle = İstifadəçi Başına Görüntü Sayı
+metricsPageUserShotsQueryCount = İstifadəçilərin Sayı
+metricsPageRetentionQueryUsers = İstifadəçilərin sayı
+metricsPageTotalRetentionQueryUsers = İstifadəçilərin sayı
+metricsPageVersionQueryTitle = Əlavə Versiyası
+metricsPageVersionQueryUsers = Daxil olmuş istifadəçilərin sayı
 metricsPageVersionQueryVersion = Əlavə versiyası
 metricsPageVersionQueryLastSeen = Gün
+metricsPageHeader = Metriklər
+# Note { $time } is a placeholder for a number of milliseconds, like '100'
+metricsPageDatabaseQueryTime = (məlumat bazasının vaxtı: { $time }ms)

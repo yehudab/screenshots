@@ -40,7 +40,7 @@ exports.TextTool = class TextTool extends React.Component {
     const VISIBLE_HEIGHT = this.canvasCssHeight > window.innerHeight ? window.innerHeight - EDITOR_HEADER_HEIGHT :
                                                                        this.canvasCssHeight;
 
-    const INIT_LEFT = Math.floor((this.canvasCssWidth / 2) - (INIT_FONT_SIZE / 2));
+    const INIT_LEFT = Math.floor(this.canvasCssWidth / 2);
     const INIT_TOP = window.scrollY + Math.floor((VISIBLE_HEIGHT / 2) - ((INIT_FONT_SIZE) / 2) - TEXT_INPUT_PADDING);
 
     this.state = {
@@ -53,14 +53,18 @@ exports.TextTool = class TextTool extends React.Component {
   }
 
   componentDidMount() {
-    // Set hidden div to placeholder text and has first edit happened flag to false. hasFirstInput
+    // Set hidden div to placeholder text and has first input happened flag to false. hasFirstInput
     // is used in adjustX to avoid setting hidden div textContent to empty textInput value
     hasFirstInput = false;
     this.textInput.current.nextSibling.textContent = this.textInput.current.placeholder;
     this.textInput.current.focus();
+    this.textInput.current.nextSibling.style.maxWidth = `${this.canvasCssWidth - 2 * TEXT_DRAG_EDGE_LIMIT}px`;
     this.adjustWidth();
+    const maxLeft = this.getInputMaxLeft();
+    const newLeft = clamp(this.state.left - this.textInput.current.clientWidth / 2 + TEXT_DRAG_EDGE_LIMIT, TEXT_DRAG_EDGE_LIMIT, maxLeft);
+    this.setState({left: newLeft});
+
     previousTextInputWidth = this.textInput.current.clientWidth;
-    this.center = this.getCenter();
     if (this.props.toolbarOverrideCallback) {
       this.props.toolbarOverrideCallback();
     }
@@ -146,7 +150,12 @@ exports.TextTool = class TextTool extends React.Component {
 
   setColor(color, colorName) {
     this.setState({color, colorName});
-    this.textInput.current.focus();
+
+    const txtInput = this.textInput.current;
+    txtInput.focus();
+    if (!this.isElementInViewPort(txtInput)) {
+       txtInput.scrollIntoView({block: "center"});
+    }
   }
 
   onDragMouseDown(e) {
@@ -166,7 +175,7 @@ exports.TextTool = class TextTool extends React.Component {
     const xDelta = mousePos.x - prevDragMousePos.x;
     const yDelta = mousePos.y - prevDragMousePos.y;
 
-    const maxLeft = this.canvasCssWidth - this.textInput.current.clientWidth - TEXT_DRAG_EDGE_LIMIT;
+    const maxLeft = this.getInputMaxLeft();
     const maxTop =  this.canvasCssHeight - this.textInput.current.clientHeight - TEXT_DRAG_EDGE_LIMIT;
 
     const newLeft = clamp(this.state.left + xDelta, TEXT_DRAG_EDGE_LIMIT, maxLeft);
@@ -180,7 +189,6 @@ exports.TextTool = class TextTool extends React.Component {
   }
 
   onMouseUp(e) {
-    this.center = this.getCenter();
     dragMouseDown = false;
     prevDragMousePos = null;
   }
@@ -249,8 +257,13 @@ exports.TextTool = class TextTool extends React.Component {
 
   onChangeTextSize(event) {
     const size = event.target.value;
+    const txtInput = this.textInput.current;
+
     this.setState({textSize: size});
-    this.textInput.current.focus();
+    txtInput.focus();
+    if (!this.isElementInViewPort(txtInput)) {
+       txtInput.scrollIntoView({block: "center"});
+    }
   }
 
   onInput() {
@@ -263,41 +276,38 @@ exports.TextTool = class TextTool extends React.Component {
     this.textInput.current.style.width = `${width}px`;
   }
 
-  getCenter() {
-    const containerRect = this.el.current.getBoundingClientRect();
-    const inputRect = this.textInput.current.getBoundingClientRect();
-    return clamp(
-      (inputRect.left - containerRect.left + (this.textInput.current.clientWidth / 2)),
-      0,
-      containerRect.width);
+  adjustX() {
+    const styles = window.getComputedStyle(this.textInput.current);
+    // Check for text input width not to exceed canvas width, if yes constraint
+    // text input value to hidden div text content to stop additional text in the input box
+    if ((this.textInput.current.value.length > this.textInput.current.nextSibling.textContent.length) &&
+        (this.textInput.current.nextSibling.clientWidth >=
+          this.canvasCssWidth - (2 * parseFloat(styles.paddingLeft)))) {
+      this.textInput.current.value = this.textInput.current.nextSibling.textContent;
+    } else if (hasFirstInput) {
+        this.textInput.current.nextSibling.textContent = this.textInput.current.value;
+    }
+
+    this.adjustWidth();
+    const widthDiff = this.textInput.current.clientWidth - previousTextInputWidth;
+    const maxLeft = this.getInputMaxLeft();
+    const newLeft = clamp(this.state.left - widthDiff / 2, TEXT_DRAG_EDGE_LIMIT, maxLeft);
+    this.setState({left: newLeft});
+    previousTextInputWidth = this.textInput.current.clientWidth;
   }
 
-  adjustX() {
-    if (hasFirstInput) {
-      this.textInput.current.nextSibling.textContent = this.textInput.current.value;
-    }
-    this.adjustWidth();
+  isElementInViewPort(el) {
+    const rect = el.getBoundingClientRect();
+    return (
+        rect.top >= (EDITOR_HEADER_HEIGHT + rect.height) &&
+        rect.left >= 0 &&
+        rect.bottom <= window.innerHeight &&
+        rect.right <= window.innerWidth
+    );
+  }
 
-    const containerRect = this.el.current.getBoundingClientRect();
-    const inputRect = this.textInput.current.getBoundingClientRect();
-    const widthDiff = this.textInput.current.clientWidth - previousTextInputWidth;
-    let left;
-
-    if (this.center === 0) {
-      left = Math.floor(inputRect.left - containerRect.left - widthDiff);
-      if (left > 0) {
-        this.center = this.getCenter();
-      }
-    } else if (this.center === containerRect.width) {
-      if ((inputRect.left - containerRect.left + inputRect.width) < containerRect.width) {
-        this.center = this.getCenter();
-      }
-    } else {
-      left = Math.floor(this.center - inputRect.width / 2);
-    }
-
-    this.setState({left});
-    previousTextInputWidth = this.textInput.current.clientWidth;
+  getInputMaxLeft() {
+    return this.canvasCssWidth - this.textInput.current.clientWidth - TEXT_DRAG_EDGE_LIMIT;
   }
 };
 
