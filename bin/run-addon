@@ -10,10 +10,10 @@ nodemon_pid=
 binary=
 firefoxes=(
 "$(which firefox || true)"
-"/Applications/FirefoxNightly.app"
-"/Applications/Firefox Nightly.app"
 "/Applications/FirefoxDeveloperEdition.app"
 "/Applications/Firefox Developer Edition.app"
+"/Applications/FirefoxNightly.app"
+"/Applications/Firefox Nightly.app"
 "/Applications/FirefoxAurora.app"
 )
 setup_profile=

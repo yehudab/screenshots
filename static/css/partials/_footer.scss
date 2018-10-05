@@ -1,6 +1,7 @@
 .footer {
-  @include respond-to("small") {
+  @media (max-width: 768px) {
     @include flex-container(column, space-between, flex-start);
+    padding: $grid-unit;
   }
 
   @include flex-container(row, space-between, center);
@@ -12,8 +13,9 @@
     margin: 0 0;
     padding: 0 0;
 
-    @include respond-to("small") {
+    @media (max-width: 768px) {
       @include flex-container(column, space-between, stretch);
+      padding-top: 16px;
     }
 
     li {

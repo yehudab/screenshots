@@ -50,8 +50,6 @@
 
   @include respond-to("large") {
     @include flex-container(row, flex-start, center);
-    flex: initial;
-    padding-top: 4px;
     overflow: hidden;
   }
 
@@ -87,7 +85,7 @@
     background-color: $light-default;
     justify-content: flex-end;
     border: none;
-    flex: 1;
+    flex: initial;
     order: 0;
   }
   background-color: $white;
@@ -104,9 +102,11 @@
   @include flex-container(column, center, flex-start);
   @include respond-to("small") {
     padding: 0 0 0 $grid-unit * 0.5;
+    max-width: calc(100vw - 150px);
   }
   color: $black;
   padding: 0 0 0 $grid-unit;
+  width: 100%;
 
   > div {
     white-space: nowrap;
@@ -119,25 +119,18 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   margin: 0;
+  width: 100%;
 }
 
 .shot-title {
-  @include respond-to("medium") {
-    max-width: 500px;
-  }
   @include respond-to("large") {
     font-size: 32px;
     line-height: 39px;
-    max-width: 250px;
     padding-bottom: 8px;
-  }
-  @include respond-to("extra-large") {
-    max-width: 500px;
   }
   font-weight: bold;
   font-size: 24px;
   line-height: 29px;
-  max-width: 130px;
   padding-bottom: 4px;
 
   &.saving {
@@ -188,6 +181,11 @@
 .subtitle-link,
 .time-diff {
   margin-right: 8px;
+}
+
+.subtitle-link {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .promo-panel {

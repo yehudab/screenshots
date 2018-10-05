@@ -19,8 +19,8 @@
   width: 100%;
 
   .logo {
-    @include respond-to("small") {
-      max-width: $grid-unit * 10;
+    @media (max-width: 768px) {
+      padding: 20px;
     }
 
     @include respond-to("large") {
@@ -28,31 +28,31 @@
     }
     align-items: center;
     display: flex;
-    padding: 20px 0;
+    padding: 20px 30px;
     flex: 1;
     height: $grid-unit * 3.5;
 
     .screenshots-logo {
       @include respond-to("small") {
-        background-position: center 5px;
-        width: $grid-unit * 9;
+        background-position: 0 center;
+        width: 100%;
+      }
+      @include respond-to("large") {
+        height: $grid-unit * 1.5;
       }
       background-image: url("../img/landing-Screenshot-logo.svg");
       background-repeat: no-repeat;
       background-size: contain;
-      height: $grid-unit * 1.5;
+      height: $grid-unit * 1.2;
       position: relative;
       width: 318px;
     }
   }
 
   .alt-actions {
-    @include respond-to("small") {
-    margin-right: 0;
-    }
     align-items: center;
     display: flex;
-    margin-right: $grid-unit * 1.5;
+    margin-right: 0;
   }
 
   a.nav-button {
@@ -85,9 +85,13 @@
     width: 60px;
     border: none;
 
-    &:active,
     &:hover {
       background-color: $light-hover;
+      border-radius: 0;
+    }
+    &:active {
+      background-color: $light-active;
+      border-radius: 0;
     }
 
     &.icon-shots,
@@ -121,9 +125,12 @@
     color: $black;
     border-right: 1px solid $light-border;
     height: 70px;
-    &:active,
+    
     &:hover {
       background-color: $light-hover;
+    }
+    &:active {
+      background-color: $light-active;
     }
   }
 }
