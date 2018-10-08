@@ -121,6 +121,9 @@
   }
 
   .nav-link {
+    @include respond-to("large") {
+      height: 96px;
+    }
     @include flex-container(column, center, center);
     color: $black;
     border-right: 1px solid $light-border;

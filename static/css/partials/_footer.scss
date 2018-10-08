@@ -1,5 +1,5 @@
 .footer {
-  @media (max-width: 768px) {
+  @media (max-width: 959px) {
     @include flex-container(column, space-between, flex-start);
     padding: $grid-unit;
   }
@@ -13,7 +13,7 @@
     margin: 0 0;
     padding: 0 0;
 
-    @media (max-width: 768px) {
+    @media (max-width: 959px) {
       @include flex-container(column, space-between, stretch);
       padding-top: 16px;
     }

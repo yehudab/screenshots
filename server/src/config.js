@@ -104,14 +104,14 @@ const conf = convict({
     user: {
       doc: "The Postgres user",
       format: String,
-      default: "postgres",
+      default: process.env.USER,
       env: "RDS_USERNAME",
       arg: "db-user",
     },
     password: {
       doc: "The Postgres password",
       format: String,
-      default: "postgres",
+      default: "",
       env: "RDS_PASSWORD",
       arg: "db-pass",
     },
@@ -260,13 +260,6 @@ const conf = convict({
     default: false,
     env: "SHOW_STACK_TRACES",
     arg: "show-stack-traces",
-  },
-  debugGoogleAnalytics: {
-    doc: "Include debug information about events send to Google Analytics",
-    format: Boolean,
-    default: false,
-    env: "DEBUG_GOOGLE_ANALYTICS",
-    arg: "debug-google-analytics",
   },
   testing: {
     failSometimes: {
