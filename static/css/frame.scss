@@ -99,13 +99,15 @@
 
 .shot-info {
   @include flex-container(column, center, flex-start);
-  @include respond-to("small") {
-    padding: 0 0 0 $grid-unit * 0.5;
-    max-width: calc(100vw - 150px);
-  }
   color: $black;
-  padding: 0 0 0 $grid-unit;
+  padding: 0 0 0 $grid-unit * 0.5;
   width: 100%;
+  max-width: calc(100vw - 160px);
+
+  @include respond-to("large") {
+    max-width: auto;
+    padding: 0 0 0 $grid-unit;
+  }
 
   > div {
     white-space: nowrap;

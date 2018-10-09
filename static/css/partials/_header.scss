@@ -19,8 +19,10 @@
   width: 100%;
 
   .logo {
-    @media (max-width: 768px) {
-      padding: 20px;
+    padding: 20px;
+
+    @include respond-to("large") {
+      padding: 20px 30px;
     }
 
     @include respond-to("large") {
@@ -28,7 +30,6 @@
     }
     align-items: center;
     display: flex;
-    padding: 20px 30px;
     flex: 1;
     height: $grid-unit * 3.5;
 
@@ -140,18 +141,13 @@
 
 .ad-banner {
   @include flex-container(row, center, center);
-  @include respond-to("medium") {
-    height: 58px;
-  }
-
+  
   @include respond-to("small") {
-    height: 68px;
     font-size: 13px;
   }
 
   display: flex;
   font-size: 14px;
-  height: 48px;
   color: $black;
   background: #efeff1;
   width: 100%;
