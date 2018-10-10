@@ -77,7 +77,7 @@ class Body extends React.Component {
     const is57 = this.props.isFirefox && this.props.firefoxVersion >= 57;
     return (
       <reactruntime.BodyTemplate {...this.props}>
-        <HomePageHeader isOwner={this.props.showMyShots} hasFxa={this.props.hasFxa}
+        <HomePageHeader isOwner={this.props.authenticated} hasFxa={this.props.hasFxa}
                         staticLink={this.props.staticLink}/>
         <div className="banner">
           <div className="banner-image-back" />
@@ -167,7 +167,7 @@ Body.propTypes = {
   hasFxa: PropTypes.bool,
   firefoxVersion: PropTypes.string,
   isFirefox: PropTypes.bool,
-  showMyShots: PropTypes.bool,
+  authenticated: PropTypes.bool,
   staticLink: PropTypes.func,
 };
 

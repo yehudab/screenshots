@@ -16,14 +16,14 @@ exports.HomePageHeader = class HomePageHeader extends React.Component {
 
   renderFxASignIn() {
       return (
-          <SignInButton isAuthenticated={this.props.hasFxa} initialPage=""
+          <SignInButton isFxaAuthenticated={this.props.hasFxa} initialPage=""
                         staticLink={this.props.staticLink} />
       );
   }
 
   render() {
     let myShots;
-    if (this.props.isOwner || this.props.hasFxa) {
+    if (this.props.isOwner) {
       myShots = <Localized id="shotIndexPageMyShotsButton" attrs={{title: true}}>
           <a className="nav-button icon-shots" title="My Shots" href="/shots"
              onClick={ this.onClickMyShots.bind(this) } tabIndex="0">

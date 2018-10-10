@@ -165,10 +165,6 @@ class Shot extends AbstractShot {
     this.ownerId = ownerId;
   }
 
-  checkOwner(deviceId, accountId) {
-    return (this.ownerId && this.ownerId === deviceId) || (this.accountId && this.accountId === accountId);
-  }
-
   oembedJson({maxheight, maxwidth}) {
     const body = renderOembedString({shot: this, maxheight, maxwidth, backend: this.backend});
     return {
@@ -409,8 +405,8 @@ Shot.get = async function(backend, id, deviceId, accountId) {
     json.url = rawValue.url;
   }
 
-  const shot = new Shot(rawValue.userid, backend, id, json);
-  shot.isOwner = rawValue.userid === deviceId || (accountId && rawValue.accountId === accountId);
+  const shot = new Shot(rawValue.deviceId, backend, id, json);
+  shot.isOwner = rawValue.deviceId === deviceId || (accountId && rawValue.accountId === accountId);
   shot.urlIfDeleted = rawValue.url;
   shot.accountId = rawValue.accountId;
   shot.expireTime = rawValue.expireTime;
@@ -442,8 +438,7 @@ Shot.getRawValue = function(id, deviceId, accountId) {
     }
     const row = rows[0];
     return {
-      // FIXME: why is this named userid? Shouldn't it be deviceId or ownerId?
-      userid: row.deviceid,
+      deviceId: row.deviceid,
       value: row.value,
       url: row.url,
       title: row.title,
