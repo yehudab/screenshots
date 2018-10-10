@@ -17,7 +17,7 @@ exports.HomePageHeader = class HomePageHeader extends React.Component {
   renderFxASignIn() {
       return (
           <SignInButton isAuthenticated={this.props.hasFxa} initialPage=""
-                        staticLink={this.props.staticLink} /> 
+                        staticLink={this.props.staticLink} />
       );
   }
 

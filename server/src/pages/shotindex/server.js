@@ -8,7 +8,6 @@ const app = express();
 exports.app = app;
 
 app.get("/", function(req, res) {
-  console.log("getting shots for", req.deviceId, req.accountId);
   if (!req.deviceId && !req.accountId) {
     _render();
     return;
@@ -26,7 +25,6 @@ app.get("/", function(req, res) {
     });
 
   function _render(shotsPage) {
-    console.log("local render stuff", shotsPage);
     if (shotsPage) {
       ["shots", "totalShots", "pageNumber", "shotsPerPage"].forEach(x => {
         if (shotsPage[x] !== undefined) {
